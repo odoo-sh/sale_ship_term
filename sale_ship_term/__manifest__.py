@@ -11,6 +11,7 @@
     'author': "Sodexis",
     'license': 'OPL-1',
     'installable': True,
+    'images': ['images/main_screenshot.png'],
     'depends': [
         'delivery'
         ],
