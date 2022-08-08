@@ -23,6 +23,4 @@
         'views/res_config_settings_views.xml',
         'views/partner_views.xml',
     ],
-    'price': 9.99,
-    'currency': "USD",
 }
