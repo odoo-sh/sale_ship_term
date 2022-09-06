@@ -5,12 +5,12 @@
     'name': "Sale Shipping Terms",
     'summary': """
         This module allows to use shipping terms""",
-    'version': "14.0.1.0.0",
+    'version': "15.0.1.0.0",
     'category': 'Uncategorized',
     'website': "http://sodexis.com/",
     'author': "Sodexis",
     'license': 'OPL-1',
-    'installable': True,
+    'installable': False,
     'images': ['images/main_screenshot.png'],
     'depends': [
         'delivery'
