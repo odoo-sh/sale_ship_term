@@ -1,4 +1,4 @@
-# Copyright 2021 Sodexis
+# Copyright 2021_2022 Sodexis
 # License OPL-1 (See LICENSE file for full copyright and licensing details).
 
 from odoo import models, fields
