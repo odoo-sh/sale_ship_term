@@ -26,5 +26,5 @@ class StockPicking(models.Model):
 
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
-        if self.shipping_term not in ('collect', 'free', 'thirdparty', 'cod') and self.sale_id and self.sale_id.carrier_id:
-            super()._add_delivery_cost_to_so()
+        if self.shipping_term not in ('collect', 'free', 'thirdparty', 'cod') and self.sale_id and self.carrier_id:
+            super(StockPicking,self)._add_delivery_cost_to_so()
