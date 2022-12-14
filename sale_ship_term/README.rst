@@ -19,4 +19,4 @@ Usage
 Contributors
 ------------
 
-* Sodexis, Inc <apps@sodexis.com>
+* Sodexis <apps@sodexis.com>
