@@ -26,5 +26,24 @@ class StockPicking(models.Model):
 
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
-        if self.shipping_term not in ('collect', 'free', 'thirdparty', 'cod') and self.sale_id and self.carrier_id:
-            super()._add_delivery_cost_to_so()
+        super()._add_delivery_cost_to_so()
+        add_tracking = self.env['ir.config_parameter'].sudo().get_param('sale_ship_term.add_tracking')
+        if add_tracking and self.sale_id and self.carrier_id and self.carrier_id.invoice_policy == 'real':
+            delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == self.carrier_id.product_id and self.carrier_tracking_ref)
+            carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0))
+            if not delivery_lines:
+                delivery_lines = [self.sale_id._create_delivery_line(self.carrier_id, carrier_price)]
+            delivery_line = delivery_lines[0]
+            delivery_line[0].write({
+                'price_unit': carrier_price,
+                # remove the estimated price from the description
+                'name': self.carrier_id.with_context(lang=self.partner_id.lang).name,
+            })
+        carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0))
+        delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and round(l.price_unit,2) == round(carrier_price,2) and l.product_id == self.carrier_id.product_id and 'Tracking Number(s)' not in l.name)
+        if delivery_lines and self.carrier_tracking_ref:
+            if ',' in self.carrier_tracking_ref:
+                delivery_lines.name += ' \n(Tracking Number(s): ' + self.carrier_tracking_ref.replace(",",", ") + ')'
+            else :
+                delivery_lines.name += ' \nTracking Number(s): ' + self.carrier_tracking_ref
+

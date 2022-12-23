@@ -32,6 +32,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-6 o_setting_box" id="add_tracking">
+                    <div class="o_setting_left_pane">
+                        <field name="add_tracking"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="add_tracking"/>
+                        <div class="text-muted">
+                            Add Delivery Cost to Sale Order lines with Tracking Reference(s)
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>

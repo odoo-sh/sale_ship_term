@@ -62,3 +62,4 @@ class ResConfigSettings(models.TransientModel):
     cod = fields.Boolean(string='C.O.D.')
     product_id = fields.Many2one('product.product', string='C.O.D. Product',
         help="When COD shipping term is selected, this product will be added to the sales order line")
+    add_tracking = fields.Boolean(string="Add Tracking",config_parameter='sale_ship_term.add_tracking')
