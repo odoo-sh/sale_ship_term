@@ -23,9 +23,9 @@ class SaleOrder(models.Model):
         if self.env['ir.config_parameter'].sudo().get_param('prepaid_add'):
             return 'prepaid_add'
 
-    shipping_term = fields.Selection(_get_ship_terms , string='Shipping Terms', copy=False, default=_get_default_ship_term)
-    third_party_billing_id = fields.Many2one('res.partner', string='3rd party billing', copy=False)
-    carrier_account = fields.Char(string='Carrier Account', copy=False)
+    shipping_term = fields.Selection(_get_ship_terms , string='Shipping Terms', copy=True, default=_get_default_ship_term)
+    third_party_billing_id = fields.Many2one('res.partner', string='3rd party billing', copy=True)
+    carrier_account = fields.Char(string='Carrier Account', copy=True)
 
 #     def action_confirm(self):
 #         res = super(SaleOrder, self).action_confirm()

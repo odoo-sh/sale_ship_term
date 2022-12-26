@@ -12,6 +12,7 @@
                 position="after">
                 <field name="shipping_term"
                     attrs="{'readonly':[('state','not in',('draft','sent'))]}" />
+                <field name="carrier_id" attrs="{'readonly':[('state','not in',('draft','sent'))]}"/>
                 <field name="third_party_billing_id" attrs="{'readonly':[('state','not in',('draft','sent'))],
                             'required':[('shipping_term','=','thirdparty')],
                             'invisible':[('shipping_term','!=','thirdparty')]}"/>
