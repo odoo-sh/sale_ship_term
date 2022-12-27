@@ -26,7 +26,8 @@ class StockPicking(models.Model):
 
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
-        super()._add_delivery_cost_to_so()
+        if self.shipping_term != 'free' and self.sale_id and self.carrier_id:
+            super()._add_delivery_cost_to_so()
         add_tracking = self.env['ir.config_parameter'].sudo().get_param('sale_ship_term.add_tracking')
         if add_tracking and self.sale_id and self.carrier_id and self.carrier_id.invoice_policy == 'real':
             delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == self.carrier_id.product_id and self.carrier_tracking_ref)
@@ -34,6 +35,8 @@ class StockPicking(models.Model):
             if not delivery_lines:
                 delivery_lines = [self.sale_id._create_delivery_line(self.carrier_id, carrier_price)]
             delivery_line = delivery_lines[0]
+            if self.shipping_term == 'free':
+                carrier_price = 0.0
             delivery_line[0].write({
                 'price_unit': carrier_price,
                 # remove the estimated price from the description
