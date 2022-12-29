@@ -49,3 +49,21 @@ class StockPicking(models.Model):
             else :
                 delivery_lines.name += ' \nTracking Number(s): ' + self.carrier_tracking_ref
 
+    def cancel_shipment(self):
+        carrier_tracking_ref = self.carrier_tracking_ref
+        super().cancel_shipment()
+        add_tracking = self.env['ir.config_parameter'].sudo().get_param('sale_ship_term.add_tracking')
+        for picking in self:
+            if carrier_tracking_ref and add_tracking and picking.sale_id:
+                delivery_line = picking.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == picking.carrier_id.product_id)
+                render_context = {
+                    'picking': picking,
+                    'carrier_name': picking.carrier_id.name,
+                    'shipping_cost': delivery_line.price_unit,
+                    'tracking_number': carrier_tracking_ref,
+                }
+                picking.sale_id._activity_schedule_with_view('mail.mail_activity_data_warning',
+                user_id=picking.sale_id.user_id.id or self.env.uid,
+                views_or_xmlid='sale_ship_term.exception_shipment_cancel',
+                render_context=render_context
+                )

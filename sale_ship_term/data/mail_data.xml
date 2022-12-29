@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="exception_shipment_cancel" name="Message: Alert on sale order when shipment cancelled on Delivery Order">
+		<div>
+            <p>
+                Shipment Cancelled in the Delivery Order:
+                <a href="#" data-oe-model="stock.picking" t-att-data-oe-id="picking.id"><t t-esc="picking.name"/></a>.
+                Manual actions may be needed.
+            </p>
+            <p>
+                <p>Exception(s):</p>
+                <ul>
+                    <li>Shipment with <t t-out="carrier_name"/> Tracking Number(s): <t t-out="tracking_number"/> and Cost: <t t-out="shipping_cost"/> has been cancelled.</li>
+                </ul>
+            </p>
+		</div>
+	</template>
+
+</odoo>

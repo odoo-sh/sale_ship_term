@@ -17,6 +17,7 @@
         ],
     'data': [
         'data/sale_ship_term_data.xml',
+        'data/mail_data.xml',
         'views/sale_view.xml',
         'views/stock_picking_view.xml',
         'views/account_invoice_view.xml',
