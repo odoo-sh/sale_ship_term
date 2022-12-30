@@ -31,7 +31,7 @@ class StockPicking(models.Model):
         add_tracking = self.env['ir.config_parameter'].sudo().get_param('sale_ship_term.add_tracking')
         carrier_price = self.carrier_price * (1.0 + (float(self.carrier_id.margin) / 100.0))
         if add_tracking and self.sale_id and self.carrier_id and self.carrier_id.invoice_policy == 'real':
-            delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == self.carrier_id.product_id and self.carrier_tracking_ref)
+            delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == self.carrier_id.product_id and self.carrier_tracking_ref and 'Tracking Number(s)' not in l.name)
             if not delivery_lines:
                 delivery_lines = [self.sale_id._create_delivery_line(self.carrier_id, carrier_price)]
             delivery_line = delivery_lines[0]
@@ -55,7 +55,7 @@ class StockPicking(models.Model):
         add_tracking = self.env['ir.config_parameter'].sudo().get_param('sale_ship_term.add_tracking')
         for picking in self:
             if carrier_tracking_ref and add_tracking and picking.sale_id:
-                delivery_line = picking.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == picking.carrier_id.product_id)
+                delivery_line = picking.sale_id.order_line.filtered(lambda l: l.is_delivery and l.product_id == picking.carrier_id.product_id and carrier_tracking_ref in l.name)
                 render_context = {
                     'picking': picking,
                     'carrier_name': picking.carrier_id.name,
