@@ -43,11 +43,12 @@ class StockPicking(models.Model):
                 'name': self.carrier_id.with_context(lang=self.partner_id.lang).name,
             })
         delivery_lines = self.sale_id.order_line.filtered(lambda l: l.is_delivery and round(l.price_unit,2) == round(carrier_price,2) and l.product_id == self.carrier_id.product_id and 'Tracking Number(s)' not in l.name)
+        delivery_line = delivery_lines[0]
         if delivery_lines and self.carrier_tracking_ref:
             if ',' in self.carrier_tracking_ref:
-                delivery_lines.name += ' \n(Tracking Number(s): ' + self.carrier_tracking_ref.replace(",",", ") + ')'
+                delivery_line.name += ' \n(Tracking Number(s): ' + self.carrier_tracking_ref.replace(",",", ") + ')'
             else :
-                delivery_lines.name += ' \nTracking Number(s): ' + self.carrier_tracking_ref
+                delivery_line.name += ' \nTracking Number(s): ' + self.carrier_tracking_ref
 
     def cancel_shipment(self):
         carrier_tracking_ref = self.carrier_tracking_ref
